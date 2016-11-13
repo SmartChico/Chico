@@ -27,7 +27,7 @@ namespace Chico
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+               // builder.AddUserSecrets();
             }
 
             builder.AddEnvironmentVariables();
@@ -43,7 +43,21 @@ namespace Chico
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddDbContext<chicoContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(config => {
+                // Config here
+                config.User.RequireUniqueEmail = true;
+                config.Password = new Microsoft.AspNetCore.Identity.PasswordOptions
+                {
+                    RequireDigit = false,
+                    RequireNonAlphanumeric = false,
+                    RequireUppercase = false,
+                    RequireLowercase = true,
+                    RequiredLength = 6,
+                };
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 

@@ -1,0 +1,30 @@
+@model IEnumerable<Chico.Models.Naics>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>The first 20 entries in NAICS table</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeId)
+            </th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeId)
+            </td>
+            <td>
+               @item.Description
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

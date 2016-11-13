@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Chico.Models;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.IdentityModel.Protocols;
 
 namespace Chico.Data
 {
