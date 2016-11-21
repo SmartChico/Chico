@@ -22,19 +22,22 @@ namespace Chico.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly chicoContext _chicoContext;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            chicoContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _chicoContext = context;
         }
 
         //
@@ -92,7 +95,12 @@ namespace Chico.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            System.Console.WriteLine(_chicoContext.EntityType);
+            var entityTypes = _chicoContext.EntityType
+               .Select(x => new { Id = x.EntityTypeId, Value = x.Name });
+            var model = new RegisterViewModel();
+            model.entityType = new SelectList(entityTypes, "Id", "Value");
+            return View(model);
         }
 
         //
@@ -115,6 +123,22 @@ namespace Chico.Controllers
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    
+                    var party = new Party();
+                    var email = new Email();
+                    email.Email1 = model.Email;
+                    var partyEmail = new PartyEmail { Email = email, Party = party };
+                    var org = new Organization();
+                    org.Party = party;
+                    org.Name = model.Name;
+                    org.EntityType = _chicoContext.EntityType.Find(model.entityTypeID);
+                    org.IncludeInListing = model.includeInListing;
+                    _chicoContext.Party.Add(party);
+                    _chicoContext.Email.Add(email);
+                    _chicoContext.PartyEmail.Add(partyEmail);
+                    _chicoContext.Organization.Add(org);
+
+                    await _chicoContext.SaveChangesAsync();
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);

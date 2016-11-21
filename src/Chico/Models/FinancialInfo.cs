@@ -5,7 +5,7 @@ namespace Chico.Models
 {
     public partial class FinancialInfo
     {
-        public string FinancialInfoId { get; set; }
+        public long PartyId { get; set; }
         public long? AccountingFirm { get; set; }
         public long? ChiefAccountant { get; set; }
         public string AccountingSoftware { get; set; }

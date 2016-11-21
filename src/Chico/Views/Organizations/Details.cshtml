@@ -1,0 +1,78 @@
+@model Chico.Models.Organization
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Organization</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActiveStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ActiveStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ChicoSignUpDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ChicoSignUpDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EstablishmentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EstablishmentDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IncludeInListing)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IncludeInListing)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfEmployees)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfEmployees)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Purpose)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Purpose)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RegisteredAgent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RegisteredAgent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Rowguid)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Rowguid)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PartyId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

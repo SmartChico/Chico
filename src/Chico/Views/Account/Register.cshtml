@@ -31,6 +31,25 @@
         </div>
     </div>
     <div class="form-group">
+        <label asp-for="Name" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="types" class="col-md-2 control-label">Entity type</label>
+        <div class="col-md-10">
+            <select asp-for="entityTypeID" asp-items="@Model.entityType"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="includeInListing" class="col-md-2 control-label">Include in contractor listing</label>
+        <div class="col-md-10">
+            <input asp-for="includeInListing"/>
+        </div>
+    </div>
+    <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <button type="submit" class="btn btn-default">Register</button>
         </div>

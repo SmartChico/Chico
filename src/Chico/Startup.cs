@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Chico.Data;
 using Chico.Models;
 using Chico.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Chico
 {

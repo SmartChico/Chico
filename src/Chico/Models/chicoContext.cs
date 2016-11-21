@@ -1,15 +1,24 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System.IO;
-using Microsoft.Extensions.Configuration;
 
 namespace Chico.Models
 {
     public partial class chicoContext : DbContext
     {
+        public chicoContext(DbContextOptions<chicoContext> options)
+            : base(options)
+        {
+        }
         public virtual DbSet<Action> Action { get; set; }
         public virtual DbSet<Address> Address { get; set; }
+        public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Bid> Bid { get; set; }
         public virtual DbSet<BidAction> BidAction { get; set; }
         public virtual DbSet<Bond> Bond { get; set; }
@@ -40,15 +49,11 @@ namespace Chico.Models
         public virtual DbSet<SuretyProgram> SuretyProgram { get; set; }
         public virtual DbSet<UserAccount> UserAccount { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+       /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
-            optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
-
-        }
+            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            optionsBuilder.UseSqlServer(@"Server=ROOZBIT\SQLEXPRESS;Database=chico;Trusted_Connection=True;");
+        }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -83,11 +88,15 @@ namespace Chico.Models
                     .IsRequired()
                     .HasMaxLength(1000);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.PostlCode).HasColumnType("nchar(20)");
 
-                entity.Property(e => e.Rowguid).HasColumnName("rowguid");
+                entity.Property(e => e.Rowguid)
+                    .HasColumnName("rowguid")
+                    .HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.State).HasMaxLength(1000);
 
@@ -96,6 +105,125 @@ namespace Chico.Models
                 entity.Property(e => e.WebAddress).HasColumnType("xml");
 
                 entity.Property(e => e.Zip).HasColumnType("nchar(10)");
+            });
+
+            modelBuilder.Entity<AspNetRoleClaims>(entity =>
+            {
+                entity.HasIndex(e => e.RoleId)
+                    .HasName("IX_AspNetRoleClaims_RoleId");
+
+                entity.Property(e => e.RoleId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetRoleClaims)
+                    .HasForeignKey(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<AspNetRoles>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedName)
+                    .HasName("RoleNameIndex");
+
+                entity.Property(e => e.Id).HasMaxLength(450);
+
+                entity.Property(e => e.Name).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetUserClaims>(entity =>
+            {
+                entity.HasIndex(e => e.UserId)
+                    .HasName("IX_AspNetUserClaims_UserId");
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserClaims)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserLogins>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey })
+                    .HasName("PK_AspNetUserLogins");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("IX_AspNetUserLogins_UserId");
+
+                entity.Property(e => e.LoginProvider).HasMaxLength(450);
+
+                entity.Property(e => e.ProviderKey).HasMaxLength(450);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserLogins)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserRoles>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId })
+                    .HasName("PK_AspNetUserRoles");
+
+                entity.HasIndex(e => e.RoleId)
+                    .HasName("IX_AspNetUserRoles_RoleId");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("IX_AspNetUserRoles_UserId");
+
+                entity.Property(e => e.UserId).HasMaxLength(450);
+
+                entity.Property(e => e.RoleId).HasMaxLength(450);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.RoleId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserTokens>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name })
+                    .HasName("PK_AspNetUserTokens");
+
+                entity.Property(e => e.UserId).HasMaxLength(450);
+
+                entity.Property(e => e.LoginProvider).HasMaxLength(450);
+
+                entity.Property(e => e.Name).HasMaxLength(450);
+            });
+
+            modelBuilder.Entity<AspNetUsers>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedEmail)
+                    .HasName("EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName)
+                    .HasName("UserNameIndex")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasMaxLength(450);
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
             modelBuilder.Entity<Bid>(entity =>
@@ -232,27 +360,33 @@ namespace Chico.Models
                     .IsRequired()
                     .HasColumnType("nchar(20)");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.Rowguid).HasColumnName("rowguid");
+                entity.Property(e => e.Rowguid)
+                    .HasColumnName("rowguid")
+                    .HasDefaultValueSql("newid()");
             });
 
             modelBuilder.Entity<Email>(entity =>
             {
                 entity.ToTable("Email", "Party");
 
-                entity.Property(e => e.EmailId)
-                    .HasColumnName("EmailID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.EmailId).HasColumnName("EmailID");
 
                 entity.Property(e => e.Email1)
                     .IsRequired()
                     .HasColumnName("Email")
                     .HasColumnType("nchar(1000)");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.Rowguid).HasColumnName("rowguid");
+                entity.Property(e => e.Rowguid)
+                    .HasColumnName("rowguid")
+                    .HasDefaultValueSql("newid()");
             });
 
             modelBuilder.Entity<EntityType>(entity =>
@@ -298,11 +432,14 @@ namespace Chico.Models
 
             modelBuilder.Entity<FinancialInfo>(entity =>
             {
+                entity.HasKey(e => e.PartyId)
+                    .HasName("PK_FinancialInfo");
+
                 entity.ToTable("FinancialInfo", "Party");
 
-                entity.Property(e => e.FinancialInfoId)
-                    .HasColumnName("FinancialInfoID")
-                    .HasColumnType("nchar(10)");
+                entity.Property(e => e.PartyId)
+                    .HasColumnName("PartyID")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.AccountingSoftware).HasMaxLength(1000);
 
@@ -428,15 +565,21 @@ namespace Chico.Models
                     .HasColumnName("PartyID")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.ChicoSignUpDate).HasColumnType("datetime");
+                entity.Property(e => e.ActiveStatus).HasDefaultValueSql("0");
+
+                entity.Property(e => e.ChicoSignUpDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.EntityTypeId).HasColumnName("EntityTypeID");
 
                 entity.Property(e => e.EstablishmentDate).HasColumnType("date");
 
-                entity.Property(e => e.IncludeInListing).HasDefaultValueSql("1");
+                entity.Property(e => e.IncludeInListing).HasDefaultValueSql("0");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.Naicscode)
                     .HasColumnName("NAICSCode")
@@ -444,7 +587,15 @@ namespace Chico.Models
 
                 entity.Property(e => e.Name).IsRequired();
 
-                entity.Property(e => e.Rowguid).HasColumnName("rowguid");
+                entity.Property(e => e.Rowguid)
+                    .HasColumnName("rowguid")
+                    .HasDefaultValueSql("newid()");
+
+                entity.HasOne(d => d.EntityType)
+                    .WithMany(p => p.Organization)
+                    .HasForeignKey(d => d.EntityTypeId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Organization_EntityType");
 
                 entity.HasOne(d => d.NaicscodeNavigation)
                     .WithMany(p => p.Organization)
@@ -478,13 +629,15 @@ namespace Chico.Models
             {
                 entity.ToTable("Party", "Party");
 
-                entity.Property(e => e.PartyId)
-                    .HasColumnName("PartyID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.PartyId).HasColumnName("PartyID");
 
-                entity.Property(e => e.ModfiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModfiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.Rowguid).HasColumnName("rowguid");
+                entity.Property(e => e.Rowguid)
+                    .HasColumnName("rowguid")
+                    .HasDefaultValueSql("newid()");
             });
 
             modelBuilder.Entity<PartyAddress>(entity =>
@@ -590,7 +743,9 @@ namespace Chico.Models
 
                 entity.ToTable("Party_Phone", "Party");
 
-                entity.Property(e => e.PartyId).HasColumnName("PartyID");
+                entity.Property(e => e.PartyId)
+                    .HasColumnName("PartyID")
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.PhoneId).HasColumnName("PhoneID");
 
@@ -654,9 +809,13 @@ namespace Chico.Models
 
                 entity.Property(e => e.MiddleName).HasMaxLength(100);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.Rowguid).HasColumnName("rowguid");
+                entity.Property(e => e.Rowguid)
+                    .HasColumnName("rowguid")
+                    .HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.SpouseDateOfBirth).HasColumnType("date");
 
@@ -678,11 +837,11 @@ namespace Chico.Models
 
                 entity.ToTable("Phone", "Party");
 
-                entity.Property(e => e.PhoneNumberId)
-                    .HasColumnName("PhoneNumberID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.PhoneNumberId).HasColumnName("PhoneNumberID");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.PhoneNumber)
                     .IsRequired()
@@ -692,7 +851,9 @@ namespace Chico.Models
                     .IsRequired()
                     .HasColumnType("nchar(10)");
 
-                entity.Property(e => e.Rowguid).HasColumnName("rowguid");
+                entity.Property(e => e.Rowguid)
+                    .HasColumnName("rowguid")
+                    .HasDefaultValueSql("newid()");
             });
 
             modelBuilder.Entity<Project>(entity =>

@@ -33,6 +33,7 @@ namespace Chico.Models
         public virtual ICollection<License> License { get; set; }
         public virtual ICollection<OrgPerson> OrgPerson { get; set; }
         public virtual ICollection<SuretyProgram> SuretyProgram { get; set; }
+        public virtual EntityType EntityType { get; set; }
         public virtual Naics NaicscodeNavigation { get; set; }
         public virtual Party Party { get; set; }
     }
