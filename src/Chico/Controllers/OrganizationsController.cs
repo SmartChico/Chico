@@ -7,16 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Chico.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using System.Security.Claims;
 
 namespace Chico.Controllers
 {
+    public class OrganizationAuthorizationHandler :
+       AuthorizationHandler<OperationAuthorizationRequirement, Organization>
+    {
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
+                                                    OperationAuthorizationRequirement requirement,
+                                                    Organization resource)
+        {
+            var claimsIdentity = (ClaimsIdentity)context.User.Identity;
+            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.UserData);
+            var partyId = claim.Value;
+            if (resource.PartyId.ToString() == partyId)
+                context.Succeed(requirement);
+
+            return Task.CompletedTask;
+        }
+    }
     public class OrganizationsController : Controller
     {
         private readonly chicoContext _context;
-
-        public OrganizationsController(chicoContext context)
+        IAuthorizationService _authorizationService;
+        public OrganizationsController(chicoContext context, IAuthorizationService authorizationService)
         {
-            _context = context;    
+            _context = context;
+            _authorizationService = authorizationService;
         }
 
         // GET: Organizations
@@ -71,7 +90,6 @@ namespace Chico.Controllers
             return View(organization);
         }
 
-        [Authorize(Roles = "Administrator")]
         // GET: Organizations/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
@@ -88,7 +106,15 @@ namespace Chico.Controllers
             ViewData["EntityTypeId"] = new SelectList(_context.EntityType, "EntityTypeId", "Name", organization.EntityTypeId);
             ViewData["Naicscode"] = new SelectList(_context.Naics, "Description", "Description", organization.Naicscode);
             ViewData["PartyId"] = new SelectList(_context.Party, "PartyId", "PartyId", organization.PartyId);
-            return View(organization);
+            if (await _authorizationService.AuthorizeAsync(User, organization, Operations.Update))
+            {
+                return View(organization);
+            }
+            else
+            {
+                return new ChallengeResult();
+            }
+            //return View(organization);
         }
 
         // POST: Organizations/Edit/5

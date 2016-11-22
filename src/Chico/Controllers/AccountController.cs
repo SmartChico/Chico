@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Chico.Models;
 using Chico.Models.AccountViewModels;
 using Chico.Services;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Chico.Controllers
 {
@@ -122,9 +123,10 @@ namespace Chico.Controllers
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    
+                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");   
+
                     var party = new Party();
+                    user.partyID = party.PartyId;
                     var email = new Email();
                     email.Email1 = model.Email;
                     var partyEmail = new PartyEmail { Email = email, Party = party };
@@ -139,6 +141,7 @@ namespace Chico.Controllers
                     _chicoContext.Organization.Add(org);
 
                     await _chicoContext.SaveChangesAsync();
+                    await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(ClaimTypes.UserData, party.PartyId.ToString()));
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
