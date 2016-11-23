@@ -21,7 +21,7 @@ namespace Chico.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)context.User.Identity;
             var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.UserData);
-            var partyId = claim.Value;
+            var partyId = claim?.Value;
             if (resource.PartyId.ToString() == partyId)
                 context.Succeed(requirement);
 
@@ -39,10 +39,17 @@ namespace Chico.Controllers
         }
 
         // GET: Organizations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String searchNaics)
         {
-            var chicoContext = _context.Organization.Where(o => o.IncludeInListing==true);
-            return View(await chicoContext.ToListAsync());
+            var orgs = from m in _context.Organization
+                       where m.IncludeInListing == true
+                         select m;
+            if (!String.IsNullOrEmpty(searchNaics))
+            {
+                orgs = orgs.Where(s => s.Naicscode.Contains(searchNaics));
+            }
+            
+            return View(await orgs.ToListAsync());
         }
 
         // GET: Organizations/Details/5

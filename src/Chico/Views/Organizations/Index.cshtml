@@ -6,9 +6,14 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@using (Html.BeginForm())
+{
+    <p>
+        Title: @Html.TextBox("searchNaics") <br />
+        <input type="submit" value="Filter" />
+    </p>
+}
+ 
 <table class="table">
     <thead>
         <tr>
