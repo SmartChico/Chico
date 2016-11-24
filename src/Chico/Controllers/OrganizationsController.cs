@@ -22,7 +22,7 @@ namespace Chico.Controllers
             var claimsIdentity = (ClaimsIdentity)context.User.Identity;
             var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.UserData);
             var partyId = claim?.Value;
-            if (resource.PartyId.ToString() == partyId)
+            if (context.User.IsInRole("admin") || resource.PartyId.ToString() == partyId)
                 context.Succeed(requirement);
 
             return Task.CompletedTask;
