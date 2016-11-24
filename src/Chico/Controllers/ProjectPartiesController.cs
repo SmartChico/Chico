@@ -50,8 +50,8 @@ namespace Chico.Controllers
         // GET: ProjectParties/Create
         public IActionResult Create()
         {
-            ViewData["OverseeingPartyId"] = new SelectList(_context.Party, "PartyId", "PartyId");
-            ViewData["PartyId"] = new SelectList(_context.Party, "PartyId", "PartyId");
+            ViewData["OverseeingPartyId"] = new SelectList(_context.Organization, "PartyId", "Name");
+            ViewData["PartyId"] = new SelectList(_context.Organization, "PartyId", "Name");
             ViewData["PartyRoleInProject"] = new SelectList(_context.Role, "RoleId", "Name");
             ViewData["ProjectId"] = new SelectList(_context.Project, "ProjectId", "Name");
             return View();

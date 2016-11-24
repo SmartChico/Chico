@@ -6,11 +6,6 @@ namespace Chico.Models
 {
     public partial class chicoContext : DbContext
     {
-        public chicoContext(DbContextOptions<chicoContext> options)
-            : base(options)
-        {
-        }
-        public virtual DbSet<Action> Action { get; set; }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
@@ -20,7 +15,6 @@ namespace Chico.Models
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Bid> Bid { get; set; }
-        public virtual DbSet<BidAction> BidAction { get; set; }
         public virtual DbSet<Bond> Bond { get; set; }
         public virtual DbSet<Certificate> Certificate { get; set; }
         public virtual DbSet<Currency> Currency { get; set; }
@@ -47,34 +41,19 @@ namespace Chico.Models
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<SuretyProgram> SuretyProgram { get; set; }
 
-       /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
             optionsBuilder.UseSqlServer(@"Server=ROOZBIT\SQLEXPRESS;Database=chico;Trusted_Connection=True;");
-        }*/
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Action>(entity =>
-            {
-                entity.ToTable("Action", "Bid");
-
-                entity.Property(e => e.ActionId)
-                    .HasColumnName("ActionID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasColumnType("nchar(100)");
-            });
-
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.ToTable("Address", "Party");
 
-                entity.Property(e => e.AddressId)
-                    .HasColumnName("AddressID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.AddressId).HasColumnName("AddressID");
 
                 entity.Property(e => e.Apt).HasMaxLength(100);
 
@@ -174,9 +153,6 @@ namespace Chico.Models
                 entity.HasIndex(e => e.RoleId)
                     .HasName("IX_AspNetUserRoles_RoleId");
 
-                entity.HasIndex(e => e.UserId)
-                    .HasName("IX_AspNetUserRoles_UserId");
-
                 entity.Property(e => e.UserId).HasMaxLength(450);
 
                 entity.Property(e => e.RoleId).HasMaxLength(450);
@@ -221,6 +197,8 @@ namespace Chico.Models
                     .IsRequired()
                     .HasMaxLength(256);
 
+                entity.Property(e => e.PartyId).HasColumnName("partyID");
+
                 entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
@@ -228,75 +206,35 @@ namespace Chico.Models
             {
                 entity.ToTable("Bid", "Bid");
 
-                entity.Property(e => e.BidId)
-                    .HasColumnName("BidID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.BidId).HasColumnName("BidID");
 
-                entity.Property(e => e.OwnerId).HasColumnName("OwnerID");
+                entity.Property(e => e.DeliveryDate).HasColumnType("date");
+
+                entity.Property(e => e.OrganizationId).HasColumnName("OrganizationID");
 
                 entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
 
-                entity.Property(e => e.Status)
+                entity.Property(e => e.Role)
                     .IsRequired()
-                    .HasColumnType("nchar(10)");
-
-                entity.Property(e => e.WinnerId).HasColumnName("WinnerID");
+                    .HasColumnName("role")
+                    .HasColumnType("char(20)");
 
                 entity.HasOne(d => d.CurrencyNavigation)
                     .WithMany(p => p.Bid)
                     .HasForeignKey(d => d.Currency)
                     .HasConstraintName("FK_Bid_Currency");
 
-                entity.HasOne(d => d.Owner)
-                    .WithMany(p => p.BidOwner)
-                    .HasForeignKey(d => d.OwnerId)
+                entity.HasOne(d => d.Organization)
+                    .WithMany(p => p.Bid)
+                    .HasForeignKey(d => d.OrganizationId)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Bid_Party");
+                    .HasConstraintName("FK_Bid_Organization");
 
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.Bid)
                     .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Bid_Project");
-
-                entity.HasOne(d => d.Winner)
-                    .WithMany(p => p.BidWinner)
-                    .HasForeignKey(d => d.WinnerId)
-                    .HasConstraintName("FK_Bid_Party1");
-            });
-
-            modelBuilder.Entity<BidAction>(entity =>
-            {
-                entity.HasKey(e => new { e.BidId, e.PartyId, e.ActionId })
-                    .HasName("PK_Bid_Action");
-
-                entity.ToTable("Bid_Action", "Bid");
-
-                entity.Property(e => e.BidId).HasColumnName("BidID");
-
-                entity.Property(e => e.PartyId).HasColumnName("PartyID");
-
-                entity.Property(e => e.ActionId).HasColumnName("ActionID");
-
-                entity.Property(e => e.ActionDate).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Action)
-                    .WithMany(p => p.BidAction)
-                    .HasForeignKey(d => d.ActionId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Bid_Action_Action");
-
-                entity.HasOne(d => d.Bid)
-                    .WithMany(p => p.BidAction)
-                    .HasForeignKey(d => d.BidId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Bid_Action_Bid");
-
-                entity.HasOne(d => d.Party)
-                    .WithMany(p => p.BidAction)
-                    .HasForeignKey(d => d.PartyId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Bid_Action_Party");
             });
 
             modelBuilder.Entity<Bond>(entity =>
@@ -325,9 +263,7 @@ namespace Chico.Models
             {
                 entity.ToTable("Certificate", "Party");
 
-                entity.Property(e => e.CertificateId)
-                    .HasColumnName("CertificateID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.CertificateId).HasColumnName("CertificateID");
 
                 entity.Property(e => e.ExpirationDate).HasColumnType("date");
 
@@ -482,9 +418,7 @@ namespace Chico.Models
             {
                 entity.ToTable("License", "Party");
 
-                entity.Property(e => e.LicenseId)
-                    .HasColumnName("LicenseID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.LicenseId).HasColumnName("LicenseID");
 
                 entity.Property(e => e.EndDate).HasColumnType("date");
 
@@ -600,16 +534,16 @@ namespace Chico.Models
                     .HasForeignKey(d => d.Naicscode)
                     .HasConstraintName("FK_Organization_NAICS");
 
-                entity.HasOne(d => d.RegisteredAgentNavigation)
-                    .WithMany(p => p.Organization)
-                    .HasForeignKey(d => d.RegisteredAgent)
-                    .HasConstraintName("FK_Organization_Person");
-
                 entity.HasOne(d => d.Party)
                     .WithOne(p => p.Organization)
                     .HasForeignKey<Organization>(d => d.PartyId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Organization_Party");
+
+                entity.HasOne(d => d.RegisteredAgentNavigation)
+                    .WithMany(p => p.Organization)
+                    .HasForeignKey(d => d.RegisteredAgent)
+                    .HasConstraintName("FK_Organization_Person");
             });
 
             modelBuilder.Entity<OrganizationRole>(entity =>
@@ -884,7 +818,9 @@ namespace Chico.Models
 
                 entity.Property(e => e.PartyId).HasColumnName("PartyID");
 
-                entity.Property(e => e.AssignmentDate).HasColumnType("datetime");
+                entity.Property(e => e.AssignmentDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
 
                 entity.Property(e => e.OverseeingPartyId).HasColumnName("OverseeingPartyID");
 

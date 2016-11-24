@@ -7,9 +7,6 @@ namespace Chico.Models
     {
         public Party()
         {
-            BidOwner = new HashSet<Bid>();
-            BidWinner = new HashSet<Bid>();
-            BidAction = new HashSet<BidAction>();
             PartyAddress = new HashSet<PartyAddress>();
             PartyCertificate = new HashSet<PartyCertificate>();
             PartyEmail = new HashSet<PartyEmail>();
@@ -23,9 +20,6 @@ namespace Chico.Models
         public Guid Rowguid { get; set; }
         public DateTime ModfiedDate { get; set; }
 
-        public virtual ICollection<Bid> BidOwner { get; set; }
-        public virtual ICollection<Bid> BidWinner { get; set; }
-        public virtual ICollection<BidAction> BidAction { get; set; }
         public virtual Organization Organization { get; set; }
         public virtual ICollection<PartyAddress> PartyAddress { get; set; }
         public virtual ICollection<PartyCertificate> PartyCertificate { get; set; }

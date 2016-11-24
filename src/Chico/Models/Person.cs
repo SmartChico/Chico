@@ -7,8 +7,8 @@ namespace Chico.Models
     {
         public Person()
         {
-            OrgPerson = new HashSet<OrgPerson>();
             Organization = new HashSet<Organization>();
+            OrgPerson = new HashSet<OrgPerson>();
         }
 
         public long PartyId { get; set; }
@@ -22,8 +22,8 @@ namespace Chico.Models
         public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<OrgPerson> OrgPerson { get; set; }
         public virtual ICollection<Organization> Organization { get; set; }
+        public virtual ICollection<OrgPerson> OrgPerson { get; set; }
         public virtual Party Party { get; set; }
     }
 }

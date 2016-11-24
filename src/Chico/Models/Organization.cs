@@ -7,6 +7,7 @@ namespace Chico.Models
     {
         public Organization()
         {
+            Bid = new HashSet<Bid>();
             Certificate = new HashSet<Certificate>();
             FinancialInfo = new HashSet<FinancialInfo>();
             License = new HashSet<License>();
@@ -28,6 +29,7 @@ namespace Chico.Models
         public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 
+        public virtual ICollection<Bid> Bid { get; set; }
         public virtual ICollection<Certificate> Certificate { get; set; }
         public virtual ICollection<FinancialInfo> FinancialInfo { get; set; }
         public virtual ICollection<License> License { get; set; }
