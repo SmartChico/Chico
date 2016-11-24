@@ -1,0 +1,52 @@
+@model Chico.Models.ProjectParty
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>ProjectParty</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ProjectId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PartyId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="PartyId" class="form-control" asp-items="ViewBag.PartyId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PartyRoleInProject" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="PartyRoleInProject" class="form-control" asp-items="ViewBag.PartyRoleInProject"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="OverseeingPartyId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="OverseeingPartyId" class ="form-control" asp-items="ViewBag.OverseeingPartyId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,48 @@
+@model Chico.Models.ProjectParty
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProjectParty</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AssignmentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AssignmentDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OverseeingParty)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OverseeingParty.PartyId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Party)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Party.PartyId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PartyRoleInProjectNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PartyRoleInProjectNavigation.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Project)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Project.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
