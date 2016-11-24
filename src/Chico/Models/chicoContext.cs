@@ -6,6 +6,10 @@ namespace Chico.Models
 {
     public partial class chicoContext : DbContext
     {
+        public chicoContext(DbContextOptions<chicoContext> options)
+            : base(options)
+        {
+        }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
@@ -40,12 +44,6 @@ namespace Chico.Models
         public virtual DbSet<ProjectParty> ProjectParty { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<SuretyProgram> SuretyProgram { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Server=ROOZBIT\SQLEXPRESS;Database=chico;Trusted_Connection=True;");
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
