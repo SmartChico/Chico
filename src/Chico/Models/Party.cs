@@ -15,7 +15,6 @@ namespace Chico.Models
             PartyEmail = new HashSet<PartyEmail>();
             PartyLicense = new HashSet<PartyLicense>();
             PartyPhone = new HashSet<PartyPhone>();
-            PartyUserAccount = new HashSet<PartyUserAccount>();
             ProjectPartyOverseeingParty = new HashSet<ProjectParty>();
             ProjectPartyParty = new HashSet<ProjectParty>();
         }
@@ -33,7 +32,6 @@ namespace Chico.Models
         public virtual ICollection<PartyEmail> PartyEmail { get; set; }
         public virtual ICollection<PartyLicense> PartyLicense { get; set; }
         public virtual ICollection<PartyPhone> PartyPhone { get; set; }
-        public virtual ICollection<PartyUserAccount> PartyUserAccount { get; set; }
         public virtual Person Person { get; set; }
         public virtual ICollection<ProjectParty> ProjectPartyOverseeingParty { get; set; }
         public virtual ICollection<ProjectParty> ProjectPartyParty { get; set; }

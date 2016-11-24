@@ -9,6 +9,7 @@ using Chico.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System.Security.Claims;
+using Chico.Models.PartyViewModels;
 
 namespace Chico.Controllers
 {
@@ -59,22 +60,62 @@ namespace Chico.Controllers
             {
                 return NotFound();
             }
-
+            var orgViewModel = new OrganizationViewModel();
             var organization = await _context.Organization.SingleOrDefaultAsync(m => m.PartyId == id);
             if (organization == null)
             {
                 return NotFound();
             }
+            var party = await _context.Party.SingleOrDefaultAsync(m => m.PartyId == id);
+            var plist = _context.Party.Include(x => x.PartyEmail).ToList();
 
-            return View(organization);
+            foreach(Party pa in plist)
+            {
+                var pelist = _context.PartyEmail.Where(pe => pe.PartyId == pa.PartyId).Include(x => x.Email).ToList();
+                foreach(PartyEmail pe in pelist)
+                {
+                    orgViewModel.Emails.Add(pe.Email);
+                }
+            }
+
+            foreach (PartyAddress pe in party.PartyAddress)
+            {
+                orgViewModel.Addresses.Append(pe.Address);
+            }
+            foreach (PartyPhone pe in party.PartyPhone)
+            {
+                orgViewModel.Phones.Append(pe.Phone);
+            }
+            foreach (PartyCertificate pe in party.PartyCertificate)
+            {
+                orgViewModel.Certificates.Append(pe.Certificate);
+            }
+            foreach (PartyLicense pe in party.PartyLicense)
+            {
+                orgViewModel.Licenses.Append(pe.License);
+            }
+            orgViewModel.PartyId = party.PartyId;
+            orgViewModel.Naicscode = organization.Naicscode;
+            orgViewModel.Name = organization.Name;
+            orgViewModel.EntityTypeId = organization.EntityTypeId;
+            orgViewModel.RegisteredAgent = organization.RegisteredAgent;
+            orgViewModel.NumberOfEmployees = organization.NumberOfEmployees;
+            orgViewModel.Purpose = organization.Purpose;
+            orgViewModel.IncludeInListing = organization.IncludeInListing;
+            orgViewModel.EstablishmentDate = organization.EstablishmentDate;
+            orgViewModel.ChicoSignUpDate = organization.ChicoSignUpDate;
+            orgViewModel.ActiveStatus = organization.ActiveStatus;
+
+            return View(orgViewModel);
         }
 
+        [Authorize(Roles = "admin")]
         // GET: Organizations/Create
         public IActionResult Create()
         {
             ViewData["EntityTypeId"] = new SelectList(_context.EntityType, "EntityTypeId", "Name");
             ViewData["Naicscode"] = new SelectList(_context.Naics, "Description", "Description");
-            ViewData["PartyId"] = new SelectList(_context.Party, "PartyId", "PartyId");
+            ViewData["RegisteredAgent"] = new SelectList(_context.Person, "PartyID", "RegisteredAgent");
             return View();
         }
 
@@ -83,10 +124,13 @@ namespace Chico.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PartyId,ActiveStatus,ChicoSignUpDate,EntityTypeId,EstablishmentDate,IncludeInListing,ModifiedDate,Naicscode,Name,NumberOfEmployees,Purpose,RegisteredAgent,Rowguid")] Organization organization)
+        public async Task<IActionResult> Create(
+            [Bind("ActiveStatus,ChicoSignUpDate,EntityTypeId,EstablishmentDate,IncludeInListing,Naicscode,Name,NumberOfEmployees,Purpose,RegisteredAgent")] Organization organization)
         {
             if (ModelState.IsValid)
             {
+                Party party = new Party();
+                organization.Party = party;
                 _context.Add(organization);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -112,7 +156,6 @@ namespace Chico.Controllers
             }
             ViewData["EntityTypeId"] = new SelectList(_context.EntityType, "EntityTypeId", "Name", organization.EntityTypeId);
             ViewData["Naicscode"] = new SelectList(_context.Naics, "Description", "Description", organization.Naicscode);
-            ViewData["PartyId"] = new SelectList(_context.Party, "PartyId", "PartyId", organization.PartyId);
             if (await _authorizationService.AuthorizeAsync(User, organization, Operations.Update))
             {
                 return View(organization);
@@ -129,7 +172,8 @@ namespace Chico.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("PartyId,ActiveStatus,ChicoSignUpDate,EntityTypeId,EstablishmentDate,IncludeInListing,ModifiedDate,Naicscode,Name,NumberOfEmployees,Purpose,RegisteredAgent,Rowguid")] Organization organization)
+        public async Task<IActionResult> Edit(long id, 
+            [Bind("PartyId,ActiveStatus,ChicoSignUpDate,EntityTypeId,EstablishmentDate,IncludeInListing,ModifiedDate,Naicscode,Name,NumberOfEmployees,Purpose,RegisteredAgent,Rowguid")] Organization organization)
         {
             if (id != organization.PartyId)
             {
@@ -160,35 +204,6 @@ namespace Chico.Controllers
             ViewData["Naicscode"] = new SelectList(_context.Naics, "Description", "Description", organization.Naicscode);
             ViewData["PartyId"] = new SelectList(_context.Party, "PartyId", "PartyId", organization.PartyId);
             return View(organization);
-        }
-
-        [Authorize(Roles = "Administrator")]
-        // GET: Organizations/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var organization = await _context.Organization.SingleOrDefaultAsync(m => m.PartyId == id);
-            if (organization == null)
-            {
-                return NotFound();
-            }
-
-            return View(organization);
-        }
-
-        // POST: Organizations/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var organization = await _context.Organization.SingleOrDefaultAsync(m => m.PartyId == id);
-            _context.Organization.Remove(organization);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
         }
 
         private bool OrganizationExists(long id)

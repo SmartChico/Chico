@@ -87,7 +87,7 @@
         <div class="form-group">
             <label asp-for="RegisteredAgent" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="RegisteredAgent" class="form-control" />
+                <select asp-for="RegisteredAgent" class="form-control" asp-items="ViewBag.RegisteredAgent"></select>
                 <span asp-validation-for="RegisteredAgent" class="text-danger" />
             </div>
         </div>

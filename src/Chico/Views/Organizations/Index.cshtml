@@ -5,7 +5,12 @@
 }
 
 <h2>Index</h2>
-
+@if (User.IsInRole("admin"))
+{
+    <p>
+        Create : <a asp-controller="Organizations" asp-action="Create">New organization</a>
+    </p>
+}
 @using (Html.BeginForm())
 {
     <p>
@@ -63,8 +68,6 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.PartyId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.PartyId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PartyId">Delete</a> |
-                <a>Add personnel</a>
             </td>
         </tr>
 }

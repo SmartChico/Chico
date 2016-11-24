@@ -39,7 +39,6 @@ namespace Chico.Models
         public virtual DbSet<PartyEmail> PartyEmail { get; set; }
         public virtual DbSet<PartyLicense> PartyLicense { get; set; }
         public virtual DbSet<PartyPhone> PartyPhone { get; set; }
-        public virtual DbSet<PartyUserAccount> PartyUserAccount { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Phone> Phone { get; set; }
         public virtual DbSet<Project> Project { get; set; }
@@ -47,7 +46,6 @@ namespace Chico.Models
         public virtual DbSet<ProjectParty> ProjectParty { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<SuretyProgram> SuretyProgram { get; set; }
-        public virtual DbSet<UserAccount> UserAccount { get; set; }
 
        /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -602,6 +600,11 @@ namespace Chico.Models
                     .HasForeignKey(d => d.Naicscode)
                     .HasConstraintName("FK_Organization_NAICS");
 
+                entity.HasOne(d => d.RegisteredAgentNavigation)
+                    .WithMany(p => p.Organization)
+                    .HasForeignKey(d => d.RegisteredAgent)
+                    .HasConstraintName("FK_Organization_Person");
+
                 entity.HasOne(d => d.Party)
                     .WithOne(p => p.Organization)
                     .HasForeignKey<Organization>(d => d.PartyId)
@@ -760,30 +763,6 @@ namespace Chico.Models
                     .HasForeignKey(d => d.PhoneId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Party_Phone_Phone");
-            });
-
-            modelBuilder.Entity<PartyUserAccount>(entity =>
-            {
-                entity.HasKey(e => new { e.PartyId, e.AccountId })
-                    .HasName("PK_Party_Account");
-
-                entity.ToTable("Party_UserAccount", "Party");
-
-                entity.Property(e => e.PartyId).HasColumnName("PartyID");
-
-                entity.Property(e => e.AccountId).HasColumnName("AccountID");
-
-                entity.HasOne(d => d.Account)
-                    .WithMany(p => p.PartyUserAccount)
-                    .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Party_UserAccount_UserAccount");
-
-                entity.HasOne(d => d.Party)
-                    .WithMany(p => p.PartyUserAccount)
-                    .HasForeignKey(d => d.PartyId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Party_UserAccount_Party");
             });
 
             modelBuilder.Entity<Person>(entity =>
@@ -968,44 +947,6 @@ namespace Chico.Models
                     .WithMany(p => p.SuretyProgram)
                     .HasForeignKey(d => d.CurrencyId)
                     .HasConstraintName("FK_SuretyProgram_Currency");
-            });
-
-            modelBuilder.Entity<UserAccount>(entity =>
-            {
-                entity.HasKey(e => e.AccountId)
-                    .HasName("PK_UserAccount");
-
-                entity.ToTable("UserAccount", "Party");
-
-                entity.Property(e => e.AccountId)
-                    .HasColumnName("AccountID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.CreationDate)
-                    .HasColumnName("creationDate")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.LastLoginDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModfiedDate)
-                    .HasColumnName("modfiedDate")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.PasswordHash)
-                    .IsRequired()
-                    .HasColumnType("varchar(128)");
-
-                entity.Property(e => e.PasswordSalt)
-                    .IsRequired()
-                    .HasColumnType("varchar(10)");
-
-                entity.Property(e => e.Rowguid).HasColumnName("rowguid");
-
-                entity.Property(e => e.Username)
-                    .IsRequired()
-                    .HasColumnType("varchar(200)");
-
-                entity.Property(e => e.Verified).HasColumnName("verified");
             });
         }
     }

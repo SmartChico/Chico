@@ -1,4 +1,4 @@
-@model Chico.Models.Organization
+@model Chico.Models.PartyViewModels.OrganizationViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -35,12 +35,6 @@
             @Html.DisplayFor(model => model.IncludeInListing)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ModifiedDate)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd>
@@ -65,14 +59,29 @@
             @Html.DisplayFor(model => model.RegisteredAgent)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Rowguid)
+            @Html.DisplayNameFor(model => model.Naicscode)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Rowguid)
+            @Html.DisplayFor(model => model.Naicscode)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Emails)
+        </dt>
+        
+@foreach (var item in Model.Emails)
+{
+    <dd>
+        @Html.DisplayFor(model => item.Email1),
+    </dd>
+}
+    
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.PartyId">Edit</a> |
+    <a asp-controller="Emails" asp-action="Create" asp-route-id="@Model.PartyId">Add email</a> |
+    <a>Add phone</a> |
+    <a>Add address</a> |
+    <a>Add personnel</a> |
     <a asp-action="Index">Back to List</a>
 </div>

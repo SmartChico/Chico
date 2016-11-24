@@ -23,7 +23,7 @@ namespace Chico.Models
         public int? NumberOfEmployees { get; set; }
         public string Purpose { get; set; }
         public DateTime? EstablishmentDate { get; set; }
-        public DateTime ChicoSignUpDate { get; set; }
+        public DateTime? ChicoSignUpDate { get; set; }
         public bool IncludeInListing { get; set; }
         public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
@@ -36,5 +36,6 @@ namespace Chico.Models
         public virtual EntityType EntityType { get; set; }
         public virtual Naics NaicscodeNavigation { get; set; }
         public virtual Party Party { get; set; }
+        public virtual Person RegisteredAgentNavigation { get; set; }
     }
 }

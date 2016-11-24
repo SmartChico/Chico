@@ -1,0 +1,50 @@
+@model Chico.Models.Email
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Email</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="EmailId" />
+        <div class="form-group">
+            <label asp-for="Email1" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Email1" class="form-control" />
+                <span asp-validation-for="Email1" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Rowguid" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Rowguid" class="form-control" />
+                <span asp-validation-for="Rowguid" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ModifiedDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ModifiedDate" class="form-control" />
+                <span asp-validation-for="ModifiedDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
