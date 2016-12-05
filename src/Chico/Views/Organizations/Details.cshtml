@@ -65,15 +65,14 @@
             @Html.DisplayFor(model => model.Naicscode)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Emails)
+            Financial info
         </dt>
         <dd>
-            Financial info
+            <a asp-controller="FinancialInfoes" asp-action="Details" asp-route-id="@Model.PartyId">Fin. info</a>
         </dd>
         <dt>
-            <a asp-controller="FinancialInfoes" asp-action="Details" asp-route-id="@Model.PartyId">Fin. info</a>
+            @Html.DisplayNameFor(model => model.Emails)
         </dt>
-        
 @foreach (var item in Model.Emails)
 {
     <dd>
