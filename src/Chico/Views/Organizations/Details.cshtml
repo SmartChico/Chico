@@ -67,6 +67,12 @@
         <dt>
             @Html.DisplayNameFor(model => model.Emails)
         </dt>
+        <dd>
+            Financial info
+        </dd>
+        <dt>
+            <a asp-controller="FinancialInfoes" asp-action="Details" asp-route-id="@Model.PartyId">Fin. info</a>
+        </dt>
         
 @foreach (var item in Model.Emails)
 {
@@ -85,7 +91,7 @@
     <a>Add Owner Information</a> |
     <a>Add Contractor License</a> |
     <a>Add References</a> |
-    <a>Add Financial Details</a> |
+    <a asp-controller="FinancialInfoes" asp-action="Create" asp-route-id="@Model.PartyId">Add financial info</a> |
     <a>Subsidiary and Affiliates</a> |
     <a>Add Insurance/Surety Details</a> |
     <a>Add Attachments</a> |

@@ -1,0 +1,108 @@
+@model Chico.Models.FinancialInfo
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FinancialInfo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountingFirm)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AccountingFirm)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ChiefAccountant)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ChiefAccountant)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountingSoftware)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AccountingSoftware)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EstimateSoftware)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EstimateSoftware)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.JobCostSoftware)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.JobCostSoftware)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FinancialStatementBasis)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FinancialStatementBasis)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FinancialStatementIssuePeriod)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FinancialStatementIssuePeriod)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TaxId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TaxId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ssn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ssn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LargestBondValue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LargestBondValue)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PercentageSubcontracted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PercentageSubcontracted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LeasedEquipment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LeasedEquipment)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BankruptcyDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BankruptcyDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LargestBacklog)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LargestBacklog)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Bank)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Bank.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PartyId">Edit</a> |
+    <a asp-controller="Organizations" asp-action="Index">Back to List</a>
+</div>

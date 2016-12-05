@@ -1,0 +1,134 @@
+@model Chico.Models.FinancialInfo
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>FinancialInfo</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="PartyId" />
+        <div class="form-group">
+            <label asp-for="AccountingFirm" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AccountingFirm" class="form-control" />
+                <span asp-validation-for="AccountingFirm" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ChiefAccountant" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ChiefAccountant" class="form-control" />
+                <span asp-validation-for="ChiefAccountant" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AccountingSoftware" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AccountingSoftware" class="form-control" />
+                <span asp-validation-for="AccountingSoftware" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EstimateSoftware" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EstimateSoftware" class="form-control" />
+                <span asp-validation-for="EstimateSoftware" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="JobCostSoftware" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="JobCostSoftware" class="form-control" />
+                <span asp-validation-for="JobCostSoftware" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FinancialStatementBasis" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FinancialStatementBasis" class="form-control" />
+                <span asp-validation-for="FinancialStatementBasis" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FinancialStatementIssuePeriod" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FinancialStatementIssuePeriod" class="form-control" />
+                <span asp-validation-for="FinancialStatementIssuePeriod" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BankId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="BankId" class="form-control" asp-items="ViewBag.BankId"></select>
+                <span asp-validation-for="BankId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TaxId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TaxId" class="form-control" />
+                <span asp-validation-for="TaxId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Ssn" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Ssn" class="form-control" />
+                <span asp-validation-for="Ssn" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LargestBondValue" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LargestBondValue" class="form-control" />
+                <span asp-validation-for="LargestBondValue" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PercentageSubcontracted" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PercentageSubcontracted" class="form-control" />
+                <span asp-validation-for="PercentageSubcontracted" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LeasedEquipment" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LeasedEquipment" class="form-control" />
+                <span asp-validation-for="LeasedEquipment" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BankruptcyDescription" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="BankruptcyDescription" class="form-control" />
+                <span asp-validation-for="BankruptcyDescription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LargestBacklog" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LargestBacklog" class="form-control" />
+                <span asp-validation-for="LargestBacklog" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

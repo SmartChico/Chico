@@ -1,0 +1,119 @@
+@model IEnumerable<Chico.Models.FinancialInfo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.AccountingFirm)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ChiefAccountant)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AccountingSoftware)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EstimateSoftware)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.JobCostSoftware)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FinancialStatementBasis)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FinancialStatementIssuePeriod)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TaxId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ssn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LargestBondValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PercentageSubcontracted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LeasedEquipment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BankruptcyDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LargestBacklog)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bank)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountingFirm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChiefAccountant)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountingSoftware)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimateSoftware)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobCostSoftware)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinancialStatementBasis)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinancialStatementIssuePeriod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaxId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ssn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LargestBondValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentageSubcontracted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeasedEquipment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankruptcyDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LargestBacklog)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bank.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PartyId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PartyId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PartyId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

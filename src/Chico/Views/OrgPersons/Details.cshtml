@@ -1,0 +1,48 @@
+@model Chico.Models.OrgPerson
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>OrgPerson</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SharesOwned)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SharesOwned)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AffiliationStartDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AffiliationStartDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Org)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Org.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrgRole)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrgRole.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Person)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.FirstName)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
