@@ -34,10 +34,11 @@ namespace Chico.Controllers
             {
                 return NotFound();
             }
-
             var project = await _context.Project
+                .Include(p => p.ProjectParty)
                 .Include(p => p.CurrencyNavigation)
                 .SingleOrDefaultAsync(m => m.ProjectId == id);
+                
             if (project == null)
             {
                 return NotFound();
@@ -66,7 +67,7 @@ namespace Chico.Controllers
             if (partyId == null) return BadRequest();
             if (ModelState.IsValid)
             {
-                Party party = await _context.Party.FirstOrDefaultAsync(p => p.PartyId == Convert.ToInt64(partyId));
+                Party party = _context.Party.FirstOrDefault(p => p.PartyId == Convert.ToInt64(partyId));
                 ProjectParty pp = new ProjectParty();
                 pp.Party = party;
                 pp.Project = project;

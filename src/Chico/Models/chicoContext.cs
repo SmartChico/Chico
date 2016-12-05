@@ -772,8 +772,7 @@ namespace Chico.Models
                 entity.ToTable("Project", "Project");
 
                 entity.Property(e => e.ProjectId)
-                    .HasColumnName("ProjectID")
-                    .ValueGeneratedNever();
+                    .HasColumnName("ProjectID");
 
                 entity.Property(e => e.EndDate).HasColumnType("date");
 

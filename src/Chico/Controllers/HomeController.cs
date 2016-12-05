@@ -29,7 +29,7 @@ namespace Chico.Controllers
 
         public IActionResult Error()
         {
-            return View();
+            return View("An error happened");
         }
     }
 }

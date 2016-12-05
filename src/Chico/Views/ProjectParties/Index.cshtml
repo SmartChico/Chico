@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.AssignmentDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OverseeingParty.PartyId)
+                @Html.DisplayFor(modelItem => item.OverseeingParty.Organization.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Party.PartyId)
+                @Html.DisplayFor(modelItem => item.Party.Organization.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PartyRoleInProjectNavigation.Name)

@@ -21,7 +21,7 @@ namespace Chico.Controllers
         // GET: ProjectParties
         public async Task<IActionResult> Index()
         {
-            var chicoContext = _context.ProjectParty.Include(p => p.OverseeingParty).Include(p => p.Party).Include(p => p.PartyRoleInProjectNavigation).Include(p => p.Project);
+            var chicoContext = _context.ProjectParty.Include(p => p.OverseeingParty.PartyEmail).Include(p => p.Party.Organization).Include(p => p.PartyRoleInProjectNavigation).Include(p => p.Project);
             return View(await chicoContext.ToListAsync());
         }
 
