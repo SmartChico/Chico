@@ -74,7 +74,8 @@ namespace Chico.Controllers
                 var pelist = _context.PartyEmail.Where(pe => pe.PartyId == pa.PartyId).Include(x => x.Email).ToList();
                 foreach(PartyEmail pe in pelist)
                 {
-                    orgViewModel.Emails.Add(pe.Email);
+                    if(pe.PartyId==id)
+                        orgViewModel.Emails.Add(pe.Email);
                 }
             }
 
