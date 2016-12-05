@@ -126,7 +126,7 @@ namespace Chico.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");   
 
                     var party = new Party();
-                    user.partyID = party.PartyId;
+                    
                     var email = new Email();
                     email.Email1 = model.Email;
                     var partyEmail = new PartyEmail { Email = email, Party = party };
@@ -141,6 +141,8 @@ namespace Chico.Controllers
                     _chicoContext.Organization.Add(org);
 
                     await _chicoContext.SaveChangesAsync();
+                    user.partyID = party.PartyId;
+                    await _userManager.UpdateAsync(user);
                     await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(ClaimTypes.UserData, party.PartyId.ToString()));
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
