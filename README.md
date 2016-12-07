@@ -10,4 +10,4 @@ Afterwards, run the command `dotnet restore` in package manager console in Visua
 If you encounter more errors in setting up the project, please contact us to help you.
 
 #Test
-To test the app, please visit: smartchico.azurewebsites.net
+To test the app, please visit [our live demo website](smartchico.azurewebsites.net)
