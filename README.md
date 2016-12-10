@@ -4,7 +4,7 @@ CHICO project is intended to be a gateway for all parties in construction busine
 #Getting started
 At this stage, Chico common app is actively under development by SmartChico team. To join our team, please send an email to our team leader, Ms.Deepali Mokashi.
 
-#Tools setup
+#Development setup
 1. Install Visual Studio 2015 from this [link](https://www.microsoft.com/net/core#windowsvs2015)
 2. Update to net core 1.1.0 preview by downloading and running the installer from this [link](https://github.com/dotnet/core/blob/master/release-notes/preview-download.md)
 3. At this point you should be ready to pull the project from Github. Use a Git program (or Visual Studio built-in tool) to clone the online repository.
