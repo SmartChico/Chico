@@ -19,4 +19,4 @@ Replace {YourMachineName} and {Sql server name} with the values from your own de
 Note: You do not need to have a local copy of the database. You can set the connectionstring in appsettings.json to directly use our online database hosted on Azure cloud. But this will require whitelisting your IP address by the cloud admin.
 
 #Test
-To test the app, please visit [our live demo website](smartchico.azurewebsites.net)
+To test the app, please visit [our live demo website](http://smartchico.azurewebsites.net)
